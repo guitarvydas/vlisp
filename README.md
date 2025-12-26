@@ -1,62 +1,19 @@
-# pbp-kit
-Basic template for creating a project using PBP.
+# Summary of simple.lisp
+This program implements a minimalist asynchronous node-and-wire dataflow system demonstrating message-oriented concurrency. It orchestrates three components (Parts) to produce "Hello World" output with guaranteed ordering:
 
-# Files to Edit
-- `.gitignore`
-- `main.py`
-- `Makefile`
-- `package.json`
-- `README.md`
+Hello Part: Emits "Hello" when triggered
+World Part: Emits "World" when triggered
+Deracer Part: A synchronization component that ensures port 1 input always outputs before port 2 input, regardless of arrival order
 
-## `.gitignore`
-extend with project-specific files to be ignored
-## `main.py`
-import project-specific code and Leaf parts
-## `Makefile`
-modify `NAME` to match that of the project
-## `package.json`
-insert project-specific JS dependencies (if any)
-## `README.md`
-modify to suit project
+The architecture uses:
 
-# Files to Preserve (Don't Touch)
-- `pbp/`
-- `PBP.xml`
+Event-driven messaging: Components communicate via Mevent objects (port + payload)
+Wire-based routing: Explicit Wire objects decouple senders from receivers, enhancing modularity
+Queue-based processing: Input/output queues on each Part, plus a global output queue
+Dispatcher loop: Processes all queued inputs until exhausted, routing outputs according to wire specifications
 
-## `pbp/`
-The Parts Based Programming Tools, such as `t2t`, `kernel`, `das` and `tas`
-`t2t` means "text to text". A tool for transmogrifying input text into output text. Like REGEX, but more powerful.
-## `PBP.xml`
-Palette of Part symbols for draw.io editor.
+The program intentionally omits recursive containers, error handling, and uses ASCII names for functions (e.g., "Deracer" instead of "1→2") to maintain simplicity and Common Lisp compatibility.
 
-# Files to Add
-- `.git` via `git init`
-- project specific files
-
-# Other Tools Needed
-## Draw.io
-Editor for creating Container Parts for the project. Download it from https://drawio.com, or use the online version.
-
-# Process
-Create a fresh copy of this template directory.
-
-At a minimum, 
-- edit `main.py`
-  - import an Leaf parts needed for the project
-  - initialize each Leaf part after creating the template registry `zd.initialize_from_files (...)` and before starting the system `zd.start (...)`
-- edit `Makefile` 
-  - the `NAME` variable to match the project name
-  - to insert the kick-off argument to the project (if needed)
-  
-# UTF-8
-Some of the Part names contain Unicode. 
-
-You may need to enable Unicode before running `make` using this version of PBP.
-
-In Linux/Mac:
-`export PYTHONUTF8=1`
-
-In Windows:
-`set PYTHONUTF8=1`
-
-![API for Building and Registering Part Templates](./pbp/api.md)
+# Further
+![Documentation](README-DOCUMENTATION.md)
+![Python version](simple.py)
